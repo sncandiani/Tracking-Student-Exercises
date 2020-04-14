@@ -27,3 +27,24 @@ bilinda_butcher.assign_exercise(kurt_cobain, perennial)
 billy_corgan.assign_exercise(billy_holiday, nutshell)
 elizabeth_fraiser.assign_exercise(kate_bush, student_exercises)
 thom_yorke.assign_exercise(bjork_g, daily_journal)
+
+students = list()
+instructors = list()
+def addStudents(student): 
+    students.append(student.first_name)
+def addInstructors(instructor): 
+    instructors.append(instructor.first_name)
+
+addStudents(bjork_g)
+addStudents(kate_bush)
+addStudents(kurt_cobain)
+addStudents(billy_holiday)
+
+addInstructors(thom_yorke)
+addInstructors(billy_corgan)
+addInstructors(elizabeth_fraiser)
+addInstructors(bilinda_butcher)
+
+print(students)
+print(instructors)
+
