@@ -5,7 +5,7 @@ A console application that tracks exercises that are assigned to students at Nas
 The learning objective of this exercise is to practice creating instances of custom types defined with class, establishing the relationships between them, and practicing basic data structures in Python.
 
 ## ERD
-[ERD](https://dbdiagram.io/d/5e96122f39d18f5553fd9976)
+[ERD](StudentExerciseERD.pdf)
 
 ### Student 
 A student can only be in one cohort at a time. A student can be working on many exercises at a time.
