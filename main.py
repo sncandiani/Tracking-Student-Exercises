@@ -29,3 +29,6 @@ bilinda_butcher.assign_exercise(kurt_cobain, perennial)
 billy_corgan.assign_exercise(billy_holiday, nutshell)
 elizabeth_fraiser.assign_exercise(kate_bush, student_exercises)
 thom_yorke.assign_exercise(bjork_g, daily_journal)
+
+
+
