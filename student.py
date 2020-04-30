@@ -1,3 +1,5 @@
-class Student: 
-    def __init__(self):
+from nssperson import NSSPerson
+class Student(NSSPerson): 
+    def __init__(self, first_name, last_name, slack_handle, cohort):
+        NSSPerson.__init__(self, first_name, last_name, slack_handle, cohort)
         self.exercises = []
