@@ -141,24 +141,173 @@ class StudentExerciseReports():
             """)
             csharp_exercises = db_cursor.fetchall()
             [print(e) for e in csharp_exercises]
+    def student_exercises(self): 
+        """Retreiving student exercise associations"""
+        with sqlite3.connect(self.db_path) as conn:
+            # Create a dictionary containing exercises to change data structure
+            exercises = dict()
+            db_cursor = conn.cursor()
+            db_cursor.execute("""
+            SELECT 
+	        e.Id as Exercise_Id, 
+	        e.Name, 
+	        s.Id as Student_Id, 
+	        s.First_Name, 
+	        s.Last_Name
+            FROM Exercise as e 
+            JOIN StudentExercises as se on se.Exercise_Id = e.Id
+            JOIN Student as s on s.Id = se.Student_Id;
+            """)
+            student_exercises = db_cursor.fetchall()
+            # iterate through rows
+            for row in student_exercises:
+                exercise_id = row[0]
+                exercise_name = row[1]
+                student_id = row[2]
+                student_name = f'{row[3]} {row[4]}'
+                if student_name not in exercises:
+                    #  ????????? IF VS ELSE STATEMENT WHAT DO THEY DO DIFFERENT
+                    exercises[student_name] = [exercise_name]
+                else:
+                    # append student name to pre-existing exercise
+                    exercises[student_name].append(student_name)
+            # key and values in the dictionary
+            for student_name, exercises in exercises.items():
+                print(f"{student_name} is working on:")
+                for exercise in exercises:
+                    # starred list of the values which are the exercises
+                    print(f'\t* {exercise}')
+# ?????????? WHY ARE ONLY ONE OF MY INSTRUCTORS SHOWING UP AND WHY DO THEY ID'S NOT LINK IN THE SQL ):
+    def instructor_assignments(self): 
+        """Retreive assignments that instructors have given to students"""
+        with sqlite3.connect(self.db_path) as conn:
+            exercises = dict()
+            db_cursor = conn.cursor()
+            db_cursor.execute("""
+            SELECT 
+	        e.Id as Exercise_Id, 
+	        e.Name, 
+	        i.Id as Instructor_Id, 
+	        i.First_Name, 
+	        i.Last_Name
+            FROM Exercise as e 
+            JOIN StudentExercises AS se ON se.Exercise_Id = e.Id
+            JOIN Instructor AS i on i.Id = se.Instructor_Id;
+            """)
+            instructor_assigned = db_cursor.fetchall()
+            for row in instructor_assigned: 
+                # naming data in list of tuples
+                exercise_id = row[0]
+                exercise_name = row[1]
+                instructor_id = row[2]
+                instructor_name = f'{row[3]} {row[4]}'
+                # if the following key is not in exercises dictionary
+                if instructor_name not in exercises: 
+                    # instructor name is the key and exercise name is the value
+                    exercises[instructor_name] = [exercise_name]
+                else: 
+                    # will append values to existing list 
+                    exercises[instructor_name].append(exercise_name)
+            
+            for instructor_name, exercises in exercises.items(): 
+                print(f"{instructor_name} has assigned:")
+                for exercise in exercises: 
+                    print(f'\t* {exercise}')
+
+    def exercises_for_students(self): 
+        """Retreiving student exercise associations based on exercises"""
+        with sqlite3.connect(self.db_path) as conn:
+            exercises = dict()
+            db_cursor = conn.cursor()
+            db_cursor.execute("""
+            SELECT 
+	        e.Id as Exercise_Id, 
+	        e.Name, 
+	        s.Id as Student_Id, 
+	        s.First_Name, 
+	        s.Last_Name
+            FROM Exercise as e 
+            JOIN StudentExercises as se on se.Exercise_Id = e.Id
+            JOIN Student as s on s.Id = se.Student_Id;
+            """)
+            student_exercises = db_cursor.fetchall()
+            for row in student_exercises:
+                exercise_id = row[0]
+                exercise_name = row[1]
+                student_id = row[2]
+                student_name = f'{row[3]} {row[4]}'
+                if exercise_name not in exercises:
+                    exercises[exercise_name] = [student_name]
+                else:
+                    exercises[exercise_name].append(student_name)
+    
+            for exercise_name, students in exercises.items():
+                print(f"{exercise_name} is being worked on by:")
+                for student in students:
+                    # starred list of the values which are the exercises
+                    print(f'\t* {student}')
+
+    def tracking_exercises(self): 
+        """Advanced challenge for student/instructor/exercise associations"""
+        with sqlite3.connect(self.db_path) as conn:
+            exercises = dict()
+            db_cursor = conn.cursor()
+            db_cursor.execute("""
+            SELECT 
+	        e.Id AS Exercise_Id, 
+	        e.Name, 
+	        s.Id AS Student_Id, 
+	        s.First_Name, 
+	        s.Last_Name, 
+	        i.Id AS Instructor_Id,
+	        i.First_Name, 
+	        i.Last_Name
+            FROM Exercise AS e 
+            INNER JOIN StudentExercises AS se ON se.Exercise_Id = e.Id
+            INNER JOIN Student AS s ON s.Id = se.Student_Id
+            INNER JOIN Instructor AS i ON i.Id = se.Instructor_Id;
+            """)
+            student_detailed_exercises = db_cursor.fetchall()
+            for row in student_detailed_exercises: 
+                exercise_id = row[0]
+                exercise_name = row[1]
+                student_id = row[2]
+                student_name = f'{row[3]} {row[4]}'
+            if exercise_name not in exercises:
+                    exercises[exercise_name] = [student_name]
+            else:
+                    exercises[exercise_name].append(student_name)
+    
+            for exercise_name, students in exercises.items():
+                print(f"{exercise_name} is being worked on by:")
+                for student in students:
+                    # starred list of the values which are the exercises
+                    print(f'\t* {student}')
+    
     
     
 
 
 
 reports = StudentExerciseReports()
-print("####STUDENTS & COHORT NAME######")
-reports.all_students()
-print("####INSTRUCTORS & COHORT NAME######")
-reports.all_instructors()
-print("#####COHORTS#####")
-reports.all_cohorts()
-print("####EXERCISES######")
-reports.all_exercises()
-print("####JS EXERCISES######")
-reports.js_exercises()
-print("####PYTHON EXERCISES######")
-reports.python_exercises()
-print("####C SHARP EXERCISES######")
-reports.csharp_exercises()
+
+# print("####STUDENTS & COHORT NAME######")
+# reports.all_students()
+# print("####INSTRUCTORS & COHORT NAME######")
+# reports.all_instructors()
+# print("#####COHORTS#####")
+# reports.all_cohorts()
+# print("####EXERCISES######")
+# reports.all_exercises()
+# print("####JS EXERCISES######")
+# reports.js_exercises()
+# print("####PYTHON EXERCISES######")
+# reports.python_exercises()
+# print("####C SHARP EXERCISES######")
+# reports.csharp_exercises()
+# print("####STUDENT CURRENT EXERCISES######")
+# reports.student_exercises()
+reports.instructor_assignments()
+# reports.exercises_for_students()
+# reports.tracking_exercises()
 
