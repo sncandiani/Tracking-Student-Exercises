@@ -254,12 +254,12 @@ class StudentExerciseReports():
             db_cursor = conn.cursor()
             db_cursor.execute("""
             SELECT 
-	        e.Id AS Exercise_Id, 
+	        e.Id, 
 	        e.Name, 
-	        s.Id AS Student_Id, 
+	        s.Id, 
 	        s.First_Name, 
 	        s.Last_Name, 
-	        i.Id AS Instructor_Id,
+	        i.Id,
 	        i.First_Name, 
 	        i.Last_Name
             FROM Exercise AS e 
